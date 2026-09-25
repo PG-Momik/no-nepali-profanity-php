@@ -5,8 +5,11 @@ plus the Hindi slang common in Nepal. Built for moderating user-written text —
 sites, where false positives on real names are more damaging than a missed swear.
 
 Zero runtime dependencies beyond PHP's own `ext-intl` (text normalization) and `ext-mbstring` (UTF-8 handling) —
-no third-party packages. PHP ≥ 8.2. A direct port of the [no-nepali-profanity](https://mukhxadnahunna.com/js/) npm
-package.
+no third-party packages. PHP ≥ 8.2. A direct port of the
+[no-nepali-profanity](https://github.com/PG-Momik/no-nepali-profanity) npm package, with the same word lists and
+matching rules.
+
+**Documentation: [mukhxadnahunna.com/php](https://mukhxadnahunna.com/php/)**
 
 ## Install
 
