@@ -1,0 +1,48 @@
+{
+  "name": "pg-momik/no-nepali-profanity",
+  "description": "Profanity matcher for English, Romanized Nepali and Devanagari Nepali: leetspeak, stretched and spelled-out letters, Nepali postpositions, with care not to block real names.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "profanity",
+    "filter",
+    "nepali",
+    "devanagari",
+    "moderation",
+    "bad-words"
+  ],
+  "homepage": "https://mukhxadnahunna.com/php/",
+  "authors": [
+    {
+      "name": "PG-Momik"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/PG-Momik/no-nepali-profanity/issues",
+    "source": "https://github.com/PG-Momik/no-nepali-profanity-php"
+  },
+  "require": {
+    "php": ">=8.2",
+    "ext-intl": "*",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11"
+  },
+  "autoload": {
+    "psr-4": {
+      "NoNepaliProfanity\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "NoNepaliProfanity\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

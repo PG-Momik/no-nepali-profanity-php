@@ -1,0 +1,128 @@
+# no-nepali-profanity
+
+A small, **dependency-free** profanity matcher for **English**, **Romanized (Latin) Nepali** and **Devanagari Nepali**,
+plus the Hindi slang common in Nepal. Built for moderating user-written text — names, comments, reviews — on Nepali
+sites, where false positives on real names are more damaging than a missed swear.
+
+Zero runtime dependencies beyond PHP's own `ext-intl` (text normalization) and `ext-mbstring` (UTF-8 handling) —
+no third-party packages. PHP ≥ 8.2. A direct port of the [no-nepali-profanity](https://mukhxadnahunna.com/js/) npm
+package.
+
+## Install
+
+```sh
+composer require pg-momik/no-nepali-profanity
+```
+
+Requires the `intl` and `mbstring` extensions.
+
+## Usage
+
+```php
+use NoNepaliProfanity\Profanity;
+
+// boolean check — fastest
+Profanity::containsProfanity("Great teacher!");        // false
+Profanity::containsProfanity("muji");                  // true
+Profanity::containsProfanity("मुजीको कक्षा");           // true  (Devanagari + postposition)
+
+// which words — returns normalised matches as they appeared
+Profanity::findProfanity("f.u.c.k this sh1t");        // ["fuck", "shit"]
+Profanity::findProfanity("f u c k this");              // ["fuck"]
+Profanity::findProfanity("Randip Thapa");              // []
+Profanity::findProfanity("*ss teacher");               // ["*ss"]
+
+// debugging — see what the matcher actually splits into
+Profanity::tokenize("Great teacher!");                 // ["great", "teacher"]
+```
+
+## API
+
+| Method | Returns | Notes |
+|---|---|---|
+| `Profanity::containsProfanity($text, $options?)` | `bool` | Yes/no from `findProfanity`. |
+| `Profanity::findProfanity($text, $options?)` | `string[]` | Matching words **normalised + lowercased** (leet decoded, case-folded), deduplicated. Empty when clean. |
+| `Profanity::check($text, $options?)` | `ProfanityCheck` | Scans once; inspect the result and censor it without scanning again. |
+| `Profanity::findProfanityMatches($text, $options?)` | `ProfanityMatch[]` | Every occurrence with its position in the original text, sorted by position. |
+| `Profanity::censor($text, $options?)` | `string` | The text with each match masked: `"you muji"` → `"you ****"`. Options: `mask` (default `"*"`), `replace(match)`. |
+| `Profanity::createFilter($options?)` | `ProfanityFilter` | Builds the tables once for fixed options. |
+| `Profanity::tokenize($text)` | `string[]` | Raw tokens the matcher sees. Useful for debugging why a word is (or isn't) caught. |
+| `Lexicon` | class | Tagged entries (`Lexicon::WORDS`, `Lexicon::STEMS`, `Lexicon::PHRASES`), flat per-script lists (`Lexicon::latinWords()`, `Lexicon::devanagariWords()`…) and suffixes. |
+
+Match positions (`ProfanityMatch::$start`, `$end`) are code point (Unicode character) indices into the input, like
+the Python port — not UTF-16 code units like the npm package.
+
+### Censoring
+
+```php
+Profanity::censor("you muji");                                   // "you ****"
+Profanity::censor("F.U.C.K this Sh1t!");                          // "******* this ****!"
+Profanity::censor("you muji", ['mask' => '#']);                    // "you ####"
+Profanity::censor("you muji", ['replace' => fn ($m) => '[censored]']);  // "you [censored]"
+Profanity::findProfanityMatches("you muji");                      // [ProfanityMatch(text: "muji", normalized: "muji", start: 4, end: 8)]
+```
+
+Check and censor in one pass:
+
+```php
+$result = Profanity::check("you muji");
+$result->hasProfanity;   // true
+$result->words;          // ["muji"]
+$result->censor();       // "you ****"
+```
+
+### Options
+
+```php
+Profanity::findProfanity("fuck muji मुजी", ['languages' => ['romanized']]);      // ["muji"]
+Profanity::containsProfanity("you idiot", ['strictness' => 'lenient']);         // false
+Profanity::findProfanity("terms and conditions", ['strictness' => 'strict']);   // ["conditions"]
+```
+
+- `languages`: any of `"english"`, `"romanized"`, `"devanagari"`. Default: all three.
+- `strictness`: `"lenient"` (severe words only), `"standard"` (default, adds milder insults like `idiot`, `murkha`) or
+  `"strict"` (adds the stems `rand`, `cond`, `kand`, `lund`, which also hit words like `Randip` and `conditions`).
+
+Build the tables once and reuse them:
+
+```php
+$filter = Profanity::createFilter(['languages' => ['romanized'], 'strictness' => 'lenient']);
+$filter->containsProfanity("muji");    // true
+$filter->censor("fuck muji");          // "fuck ****"
+```
+
+## What it catches
+
+- **Case and Unicode forms**: `IDIOT`, full-width letters.
+- **Leetspeak**: `sh1t`, `@ss` (`0 1 3 4 5 7 @ $`).
+- **`!` for `i` between letters**: `sh!t`, `b!tch`. Sentence-final `Great teacher!` is left alone.
+- **`*` for a hidden letter**: `f*ck`, `sh*t`, and markdown emphasis like `*sh*t*` still reads as the word.
+- **Stretched letters**: `fuuuuck`, for words of 4+ letters.
+- **Spelled-out letters**: `f.u.c.k`, `f u c k`.
+- **Nepali postpositions and plurals glued on**: `mujiko`, `randiharu`, `मुजीको`, `…हरू`.
+- **Devanagari spelling variants**: nukta, chandrabindu vs anusvara, zero-width joiners.
+- **Stems** where no ordinary word starts the same way: `fucking`, `bitches`, `machiknee`.
+- **Multi-word phrases**: `chaak ko pwal`, `pesa garne`, `sasto manche` (Latin and Devanagari).
+
+## What it deliberately doesn't
+
+- **Short words match exactly**, so `as`, `class`, `assignment` and `Assam` are fine.
+- **Name collisions**: `shit` is a whole word only, because **Shitij / शितिज** is a name. Names like **मुजी**-adjacent
+  **Randip / राण्डीप**, **Putali / पुतली**, **Asha / आशा** are checked in the test suite.
+- **No caste names, surnames or ordinary words that are only offensive in context** (e.g. *kami*, *kukur*). A word
+  list can't tell a slur from someone's name; that needs human moderation.
+- **No judgement of context, sarcasm or meaning.** This is a first-pass filter, not a moderator.
+
+## Development
+
+```sh
+composer install
+composer test          # PHPUnit
+```
+
+The word lists live in `src/Lexicon.php`, apart from the matching logic in `src/ProfanityFilter.php`. Native-speaker
+review of the Nepali lists is the most valuable contribution.
+
+## License
+
+MIT

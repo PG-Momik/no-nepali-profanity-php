@@ -1,0 +1,373 @@
+<?php
+
+declare(strict_types=1);
+
+namespace NoNepaliProfanity;
+
+/** Word lists ported from `js/src/lexicon.ts`. */
+final class Lexicon
+{
+    public const LANGUAGES = ['english', 'romanized', 'devanagari'];
+
+    public const STRICTNESS_LEVELS = ['lenient', 'standard', 'strict'];
+
+    public const WORDS = [
+        ['text' => 'fuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fuk', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'phuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shitty', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shithead', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bullshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bitch', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bastard', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'ass', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'asshole', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'arsehole', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dumbass', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dick', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dickhead', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cunt', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'whore', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'slut', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cock', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'pussy', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'twat', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'wanker', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'retard', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fack', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'piss', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'idiot', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'stupid', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'moron', 'language' => 'english', 'strictness' => 'standard'],
+
+        ['text' => 'muji', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mujhi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'muzi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'machikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'machhikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mchikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mcikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'machikney', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'randi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'raandi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'rando', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'rande', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'radi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lado', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lodo', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'puti', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'geda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jatha', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jantha', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jathya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chikney', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhalu', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'khate', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'khatey', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'harami', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gandu', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chutiya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chutia', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosdi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosadi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosdike', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bsdk', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'madarchod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'behenchod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhenchod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhakka', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lauro', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gukhane', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gand', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gaand', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gandako', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lund', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lundra', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lundri', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chodna', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'beshya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'hijada', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'kamina', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'haramzada', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'turi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'pakhe', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'condo', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'kando', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chaak', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gula', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bajiya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mji', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mzi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mujj', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mooji', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'moozi', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mcne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mechikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'laado', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'puuti', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'zatya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chodeko', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'toori', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'kundo', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'kutta', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'kutti', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'kuttiya', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'murkha', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'badmas', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'sala', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'saley', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'sali', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'chhucho', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'chhuchi', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'gu', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'thukk', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'nalayak', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'beijjat', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'nikamma', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'ghinlagdo', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'nindaniya', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'paji', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'moot', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'bhate', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'chhura', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'torpe', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'mukhulla', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'gobre', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'bhusya', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'dhurt', 'language' => 'romanized', 'strictness' => 'standard'],
+
+        ['text' => 'मुजी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मुजि', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'माचिक्ने', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मचिक्ने', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रण्डी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रन्डी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रंडी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रांडी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रण्डो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'राण्डे', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'राडी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लाडो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लांडो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'पुती', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गेडा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'जाठा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'जांठा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'जाठ्या', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चिक्ने', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भालु', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'खाते', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'हरामी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गान्डु', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गांडु', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चुतिया', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भोस्डी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भोसडी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भोस्डीके', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मादरचोद', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'बहनचोद', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भेनचोद', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'छक्का', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लौरो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गुखाने', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गान्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गाण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गान्डको', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लुंड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लुण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लुन्ड्रा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लुन्ड्री', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लोडो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चोद', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चोद्ना', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चोदेको', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'वेश्या', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'हिजडा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'कमिना', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'हरामजादा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'तुरी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'पाखे', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'कोंडो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'काण्डो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'कुन्डो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चाक', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गुला', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'बजिया', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'राण्डी', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गाण्डु', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भोसडीके', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गाण्डको', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'कोन्डो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'कुत्ता', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'कुत्ती', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'कुत्तिया', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'मुर्ख', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'मूर्ख', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'बदमास', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'साला', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'साले', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'साली', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'छुच्चो', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'छुच्ची', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'गु', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'किचकिच', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'थुक', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'थुक्क', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'नालायक', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'बेइज्जत', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'निकम्मा', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'घिनलाग्दो', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'निन्दनीय', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'पाजी', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'मूत', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'भाते', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'छुरा', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'टोर्पे', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'मुखुल्ला', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'गोबरे', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'भुस्या', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'धूर्त', 'language' => 'devanagari', 'strictness' => 'standard'],
+    ];
+
+    public const STEMS = [
+        ['text' => 'fuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'motherfuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bitch', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bastard', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'asshol', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cunt', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'whore', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'slut', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'wank', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'retard', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'machikn', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mchikn', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chutiy', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosd', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'madarch', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'behench', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhench', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chikn', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chickn', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jath', 'language' => 'romanized', 'strictness' => 'lenient'],
+        // Each of these also starts ordinary words or names: rand → Randip, cond → condition,
+        // kand → kanda / Kandel, lund → Lundberg.
+        ['text' => 'rand', 'language' => 'romanized', 'strictness' => 'strict'],
+        ['text' => 'cond', 'language' => 'romanized', 'strictness' => 'strict'],
+        ['text' => 'kand', 'language' => 'romanized', 'strictness' => 'strict'],
+        ['text' => 'lund', 'language' => 'romanized', 'strictness' => 'strict'],
+        ['text' => 'माचिक्न', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मचिक्न', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चुतिय', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भोस्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मादरच', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'बहनच', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भेनच', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चोद', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चिक्न', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'रण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लुण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'जाठ', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        // Devanagari pairs of the "strict" Latin stems cond and kand.
+        ['text' => 'कोन्ड', 'language' => 'devanagari', 'strictness' => 'strict'],
+        ['text' => 'कान्ड', 'language' => 'devanagari', 'strictness' => 'strict'],
+    ];
+
+    public const PHRASES = [
+        ['text' => 'chaak ko pwal', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'tero aama ko', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'muji jasto', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lado khaye', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lado khos', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'randi ko choro', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'randi ko ban', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gand mara', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'gand fatchya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'geda jasto', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'geda khaya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'khatako choro', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhaluko ban', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'machikne khate', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'pesa garne', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'sasto manche', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'चाकको प्वाल', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'चाक को प्वाल', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'तेरो आमाको', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'मुजी जस्तो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लाडो खाए', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लाडो खोस्', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'राण्डीको छोरो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'राण्डीको बान', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गाण्ड मरा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गाण्ड फाट्या', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गेडा जस्तो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'गेडा खाया', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'खातेको छोरो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'भालुको बान', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'माचिक्ने खाते', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'पेसा गर्ने', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'सस्तो मान्छे', 'language' => 'devanagari', 'strictness' => 'standard'],
+    ];
+
+    /** Longer first, so a bare "को" is only tried after "हरूको". Order matters. */
+    public const LATIN_SUFFIXES = [
+        'haruko', 'harule', 'haru', 'sanga', 'bata', 'lai', 'ko', 'ki', 'ka', 'le', 'ma', 'ni', 'ne', 'yo',
+    ];
+
+    public const DEVANAGARI_SUFFIXES = [
+        'हरूको', 'हरुको', 'हरूले', 'हरुले', 'हरू', 'हरु', 'बाट', 'सँग', 'संग', 'लाई', 'को', 'की', 'का', 'ले',
+        'मा', 'नि', 'ने', 'यो',
+    ];
+
+    private static function texts(array $entries, bool $latin): array
+    {
+        $out = [];
+        foreach ($entries as $entry) {
+            if (($entry['language'] !== 'devanagari') === $latin) {
+                $out[] = $entry['text'];
+            }
+        }
+        return $out;
+    }
+
+    /** @return list<string> Latin-script words at every strictness. */
+    public static function latinWords(): array
+    {
+        return self::texts(self::WORDS, true);
+    }
+
+    /** @return list<string> Latin-script stems at every strictness. */
+    public static function latinStems(): array
+    {
+        return self::texts(self::STEMS, true);
+    }
+
+    /** @return list<string> Latin-script phrases at every strictness. */
+    public static function latinPhrases(): array
+    {
+        return self::texts(self::PHRASES, true);
+    }
+
+    /** @return list<string> Devanagari words at every strictness. */
+    public static function devanagariWords(): array
+    {
+        return self::texts(self::WORDS, false);
+    }
+
+    /** @return list<string> Devanagari stems at every strictness. */
+    public static function devanagariStems(): array
+    {
+        return self::texts(self::STEMS, false);
+    }
+
+    /** @return list<string> Devanagari phrases at every strictness. */
+    public static function devanagariPhrases(): array
+    {
+        return self::texts(self::PHRASES, false);
+    }
+}
