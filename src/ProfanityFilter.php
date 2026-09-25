@@ -11,9 +11,11 @@ use function array_key_exists;
 use function array_keys;
 use function array_merge;
 use function array_slice;
+use function array_sum;
 use function count;
 use function implode;
 use function in_array;
+use function is_array;
 use function is_string;
 use function mb_str_split;
 use function mb_strlen;
@@ -40,7 +42,25 @@ final class ProfanityFilter
 {
     private const STRICTNESS_LEVEL = ['lenient' => 0, 'standard' => 1, 'strict' => 2];
 
-    private const LEET = ['0' => 'o', '1' => 'i', '3' => 'e', '4' => 'a', '5' => 's', '7' => 't', '@' => 'a', '$' => 's'];
+    private const LEET = [
+        '0' => 'o', '1' => 'i', '3' => 'e', '4' => 'a', '5' => 's', '7' => 't', '8' => 'b', '9' => 'g', '@' => 'a',
+        '$' => 's', '€' => 'e',
+    ];
+
+    /** Cyrillic and Greek letters that look like Latin ones, so "fuсk" with a Cyrillic с still reads as "fuck". */
+    private const CONFUSABLES = [
+        'а' => 'a', 'в' => 'b', 'е' => 'e', 'ё' => 'e', 'к' => 'k', 'м' => 'm', 'н' => 'h', 'о' => 'o', 'р' => 'p',
+        'с' => 'c', 'т' => 't', 'у' => 'y', 'х' => 'x', 'ѕ' => 's', 'і' => 'i', 'ї' => 'i', 'ј' => 'j', 'ԁ' => 'd',
+        'α' => 'a', 'β' => 'b', 'ε' => 'e', 'ι' => 'i', 'κ' => 'k', 'ν' => 'v', 'ο' => 'o', 'ρ' => 'p', 'τ' => 't',
+        'υ' => 'u', 'χ' => 'x',
+    ];
+
+    /** Characters that can split a word without a space: "sh.it", "fu-ck", "b_i_tch". */
+    private const GLUE_RE = '~\A[._\-\~\'`]+\z~u';
+
+    private const MAX_GLUED_PIECES = 6;
+
+    private const MAX_GLUED_LENGTH = 12;
 
     private const MIN_COLLAPSE = 4;
 
@@ -66,10 +86,31 @@ final class ProfanityFilter
     private array $latinCollapsed = [];
 
     /** @var list<string> */
-    private array $latinWords = [];
+    private array $latinStems = [];
+
+    /** @var array<string, true> */
+    private array $romanExact = [];
+
+    /** @var array<string, true> */
+    private array $romanCollapsed = [];
 
     /** @var list<string> */
-    private array $latinStems = [];
+    private array $romanStems = [];
+
+    /** @var list<string> Every Latin word, unfolded, for wildcard tokens. */
+    private array $wildWords = [];
+
+    /** @var list<string> Every Latin stem, unfolded, for wildcard tokens. */
+    private array $wildStems = [];
+
+    /** @var list<string> */
+    private array $infixes = [];
+
+    /** @var list<string> The infixes with no doubled letter, which are also looked for in the collapsed token. */
+    private array $plainInfixes = [];
+
+    /** @var array<string, true> */
+    private array $allowed = [];
 
     /** @var array<string, true> */
     private array $devWords = [];
@@ -77,11 +118,14 @@ final class ProfanityFilter
     /** @var list<string> */
     private array $devStems = [];
 
+    /** @var array<string, true> */
+    private array $devAllowed = [];
+
     /** @var list<string> */
     private array $phrases = [];
 
     /**
-     * @param array{languages?: list<string>, strictness?: string} $options
+     * @param array{languages?: list<string>, strictness?: string, extraWords?: list<string>, allowWords?: list<string>} $options
      */
     public function __construct(array $options = [])
     {
@@ -105,6 +149,16 @@ final class ProfanityFilter
         return preg_replace('~(.)\1{2,}~u', '$1$1', $s) ?? $s;
     }
 
+    /**
+     * Folds the spellings of छ, chh and x, into x. Romanized entries and tokens are both folded before they're
+     * compared, so xakka matches chhakka. It also keeps छ apart from च once letters are collapsed, so chhod ("leave")
+     * no longer matches the stem chod.
+     */
+    private static function romanize(string $s): string
+    {
+        return str_replace('chh', 'x', self::squeeze($s));
+    }
+
     private static function normalizeChar(string $ch): string
     {
         if (preg_match(self::ZERO_WIDTH_RE, $ch) === 1) {
@@ -121,10 +175,12 @@ final class ProfanityFilter
             $decomposed = str_replace("\u{0901}", "\u{0902}", $decomposed);
             return $decomposed;
         }
-        $folded = mb_strtolower(Normalizer::normalize($ch, Normalizer::FORM_KC) ?? $ch, 'UTF-8');
+        $folded = mb_strtolower(Normalizer::normalize($ch, Normalizer::FORM_KC) ?: $ch, 'UTF-8');
+        // Accents are removed, so "fück" reads as "fuck".
+        $folded = preg_replace('~\p{M}~u', '', Normalizer::normalize($folded, Normalizer::FORM_D) ?: $folded) ?? $folded;
         $out = '';
         foreach (mb_str_split($folded, 1, 'UTF-8') as $c) {
-            $out .= self::LEET[$c] ?? $c;
+            $out .= self::LEET[$c] ?? self::CONFUSABLES[$c] ?? $c;
         }
         return $out;
     }
@@ -201,7 +257,7 @@ final class ProfanityFilter
     }
 
     /**
-     * @param array{languages?: list<string>, strictness?: string} $options
+     * @param array{languages?: list<string>, strictness?: string, extraWords?: list<string>, allowWords?: list<string>} $options
      */
     private function buildTables(array $options): void
     {
@@ -217,40 +273,85 @@ final class ProfanityFilter
             throw new InvalidArgumentException('Unknown strictness "' . $strictness . '". Use one of: ' . implode(', ', array_keys(self::STRICTNESS_LEVEL)) . '.');
         }
 
-        $active = static function (array $entries, bool $devanagari) use ($languages, $level): array {
+        $active = static function (array $entries, string $language) use ($languages, $level): array {
             $out = [];
+            if (!in_array($language, $languages, true)) {
+                return $out;
+            }
             foreach ($entries as $entry) {
-                if (in_array($entry['language'], $languages, true)
-                    && self::STRICTNESS_LEVEL[$entry['strictness']] <= $level
-                    && ($entry['language'] === 'devanagari') === $devanagari
-                ) {
+                if ($entry['language'] === $language && self::STRICTNESS_LEVEL[$entry['strictness']] <= $level) {
                     $out[] = self::normalizeText($entry['text']);
                 }
             }
             return $out;
         };
 
-        $latinWords = $active(Lexicon::WORDS, false);
+        $extraWords = array_map(
+            static fn (string $w): string => self::normalizeText($w),
+            self::stringList($options['extraWords'] ?? null, 'extraWords'),
+        );
+        $allowWords = array_map(
+            static fn (string $w): string => self::normalizeText($w),
+            array_merge(Lexicon::ALLOWED, self::stringList($options['allowWords'] ?? null, 'allowWords')),
+        );
+
+        // Extra words count as English: matched as they are, without the Romanized spelling folds.
+        $englishWords = $active(Lexicon::WORDS, 'english');
+        $devWords = [];
+        foreach ($extraWords as $w) {
+            if (self::isDevanagari($w)) {
+                $devWords[$w] = true;
+            } else {
+                $englishWords[] = $w;
+            }
+        }
+        foreach ($active(Lexicon::WORDS, 'devanagari') as $w) {
+            $devWords[$w] = true;
+        }
 
         $latinExact = [];
-        foreach ($latinWords as $w) {
-            $latinExact[self::squeeze($w)] = true;
-        }
         $latinCollapsed = [];
-        foreach ($latinWords as $w) {
+        foreach ($englishWords as $w) {
+            $latinExact[self::squeeze($w)] = true;
             $c = self::collapse($w);
             if (mb_strlen($c, 'UTF-8') >= self::MIN_COLLAPSE) {
                 $latinCollapsed[$c] = true;
             }
         }
 
-        $devWords = [];
-        foreach ($active(Lexicon::WORDS, true) as $w) {
-            $devWords[$w] = true;
+        $romanWords = $active(Lexicon::WORDS, 'romanized');
+        $romanExact = [];
+        $romanCollapsed = [];
+        foreach ($romanWords as $w) {
+            $r = self::romanize($w);
+            $romanExact[$r] = true;
+            $c = self::collapse($r);
+            if (mb_strlen($c, 'UTF-8') >= self::MIN_COLLAPSE) {
+                $romanCollapsed[$c] = true;
+            }
+        }
+
+        $englishStems = $active(Lexicon::STEMS, 'english');
+        $romanStems = $active(Lexicon::STEMS, 'romanized');
+        $infixes = array_map(fn (string $i): string => self::squeeze($i), $active(Lexicon::INFIXES, 'english'));
+
+        $allowed = [];
+        $devAllowed = [];
+        foreach ($allowWords as $w) {
+            if (self::isDevanagari($w)) {
+                $devAllowed[$w] = true;
+            } else {
+                $allowed[self::squeeze($w)] = true;
+            }
         }
 
         $phrases = [];
-        foreach (array_merge($active(Lexicon::PHRASES, false), $active(Lexicon::PHRASES, true)) as $p) {
+        $phraseTexts = array_merge(
+            $active(Lexicon::PHRASES, 'english'),
+            $active(Lexicon::PHRASES, 'romanized'),
+            $active(Lexicon::PHRASES, 'devanagari'),
+        );
+        foreach ($phraseTexts as $p) {
             $body = implode('\\s+', array_map(
                 static fn (string $part): string => preg_quote($part, '~'),
                 preg_split('~\s+~u', trim($p)) ?: [],
@@ -260,11 +361,41 @@ final class ProfanityFilter
 
         $this->latinExact = $latinExact;
         $this->latinCollapsed = $latinCollapsed;
-        $this->latinWords = array_map(fn (string $w): string => self::squeeze($w), $latinWords);
-        $this->latinStems = array_map(fn (string $w): string => self::collapse($w), $active(Lexicon::STEMS, false));
+        $this->latinStems = array_map(fn (string $w): string => self::collapse($w), $englishStems);
+        $this->romanExact = $romanExact;
+        $this->romanCollapsed = $romanCollapsed;
+        $this->romanStems = array_map(fn (string $w): string => self::collapse(self::romanize($w)), $romanStems);
+        $this->wildWords = array_map(fn (string $w): string => self::squeeze($w), array_merge($englishWords, $romanWords));
+        $this->wildStems = array_map(fn (string $w): string => self::collapse($w), array_merge($englishStems, $romanStems));
+        $this->infixes = $infixes;
+        $this->plainInfixes = array_values(array_filter($infixes, fn (string $i): bool => self::collapse($i) === $i));
+        $this->allowed = $allowed;
         $this->devWords = $devWords;
-        $this->devStems = $active(Lexicon::STEMS, true);
+        $this->devStems = $active(Lexicon::STEMS, 'devanagari');
+        $this->devAllowed = $devAllowed;
         $this->phrases = $phrases;
+    }
+
+    /** @return list<string> */
+    private static function stringList(mixed $value, string $name): array
+    {
+        if ($value === null) {
+            return [];
+        }
+        if (!is_array($value)) {
+            throw new InvalidArgumentException($name . ' must be a list of strings.');
+        }
+        $out = [];
+        foreach ($value as $w) {
+            if (!is_string($w)) {
+                throw new InvalidArgumentException($name . ' must be a list of strings.');
+            }
+            $w = trim($w);
+            if ($w !== '') {
+                $out[] = $w;
+            }
+        }
+        return $out;
     }
 
     private function wildcardTokenMatches(string $token): bool
@@ -289,12 +420,12 @@ final class ProfanityFilter
 
         foreach ($forms as $f) {
             $regex = self::wildcardRegex($f);
-            foreach ($this->latinWords as $w) {
+            foreach ($this->wildWords as $w) {
                 if (preg_match($regex, $w) === 1) {
                     return true;
                 }
             }
-            foreach ($this->latinStems as $stem) {
+            foreach ($this->wildStems as $stem) {
                 if (mb_strlen($f, 'UTF-8') < mb_strlen($stem, 'UTF-8')) {
                     continue;
                 }
@@ -317,16 +448,42 @@ final class ProfanityFilter
         }
 
         foreach ($candidates as $t) {
+            if (isset($this->allowed[self::squeeze($t)])) {
+                return false;
+            }
+        }
+
+        foreach ($candidates as $t) {
             $squeezed = self::squeeze($t);
             $collapsed = self::collapse($t);
-            if (isset($this->latinExact[$squeezed])) {
+            $roman = self::romanize($t);
+            $romanCollapsed = self::collapse($roman);
+            if (isset($this->latinExact[$squeezed]) || isset($this->romanExact[$roman])) {
                 return true;
             }
             if (mb_strlen($collapsed, 'UTF-8') >= self::MIN_COLLAPSE && isset($this->latinCollapsed[$collapsed])) {
                 return true;
             }
+            if (mb_strlen($romanCollapsed, 'UTF-8') >= self::MIN_COLLAPSE && isset($this->romanCollapsed[$romanCollapsed])) {
+                return true;
+            }
             foreach ($this->latinStems as $stem) {
                 if (str_starts_with($collapsed, $stem)) {
+                    return true;
+                }
+            }
+            foreach ($this->romanStems as $stem) {
+                if (str_starts_with($romanCollapsed, $stem)) {
+                    return true;
+                }
+            }
+            foreach ($this->infixes as $i) {
+                if (str_contains($squeezed, $i)) {
+                    return true;
+                }
+            }
+            foreach ($this->plainInfixes as $i) {
+                if (str_contains($collapsed, $i)) {
                     return true;
                 }
             }
@@ -344,6 +501,12 @@ final class ProfanityFilter
             if (str_ends_with($token, $s) && mb_strlen($token, 'UTF-8') > mb_strlen($s, 'UTF-8') + 1) {
                 $candidates[] = mb_substr($token, 0, -mb_strlen($s, 'UTF-8'), 'UTF-8');
                 break;
+            }
+        }
+
+        foreach ($candidates as $t) {
+            if (isset($this->devAllowed[$t])) {
+                return false;
             }
         }
 
@@ -404,6 +567,55 @@ final class ProfanityFilter
         return $tokens;
     }
 
+    /**
+     * Runs of Latin letters split only by glue characters, read as one word. A run is joined only if one of its
+     * pieces is three letters or fewer and the joined word is at most 12 letters, so "shital.shrestha" in an email
+     * address stays two words.
+     *
+     * @return list<array{value: string, start: int, end: int}>
+     */
+    private static function gluedSpans(array $n): array
+    {
+        $runs = [];
+        preg_match_all(self::TOKEN_RE, $n['text'], $m, PREG_OFFSET_CAPTURE);
+        foreach ($m[0] as [$mtext, $byteI]) {
+            if (!self::isDevanagari($mtext)) {
+                $from = self::charOffset($n['text'], $byteI);
+                $runs[] = ['value' => $mtext, 'from' => $from, 'to' => $from + mb_strlen($mtext, 'UTF-8')];
+            }
+        }
+
+        $spans = [];
+        $group = [];
+        $flush = static function () use (&$spans, &$group, $n): void {
+            $lengths = array_map(static fn (array $r): int => mb_strlen($r['value'], 'UTF-8'), $group);
+            if (count($group) >= 2
+                && count($group) <= self::MAX_GLUED_PIECES
+                && array_sum($lengths) <= self::MAX_GLUED_LENGTH
+                && min($lengths) <= 3
+            ) {
+                $spans[] = [
+                    'value' => implode('', array_column($group, 'value')),
+                    'start' => $n['starts'][$group[0]['from']],
+                    'end' => $n['ends'][$group[count($group) - 1]['to'] - 1],
+                ];
+            }
+            $group = [];
+        };
+        foreach ($runs as $r) {
+            $prev = $group[count($group) - 1] ?? null;
+            if ($prev !== null) {
+                $gap = mb_substr($n['text'], $prev['to'], $r['from'] - $prev['to'], 'UTF-8');
+                if (preg_match(self::GLUE_RE, $gap) !== 1) {
+                    $flush();
+                }
+            }
+            $group[] = $r;
+        }
+        $flush();
+        return $spans;
+    }
+
     /** @return list<string> The raw tokens the matcher sees. Useful for debugging why a word is (or isn't) caught. */
     public static function tokenize(string $text): array
     {
@@ -437,6 +649,23 @@ final class ProfanityFilter
                     normalized: $t['value'],
                     start: $t['start'],
                     end: $t['end'],
+                );
+            }
+        }
+
+        // A glued word is only read joined when none of its pieces matched on its own.
+        foreach (self::gluedSpans($n) as $g) {
+            foreach ($found as $f) {
+                if ($f->start < $g['end'] && $g['start'] < $f->end) {
+                    continue 2;
+                }
+            }
+            if ($this->latinTokenMatches($g['value'])) {
+                $found[] = new ProfanityMatch(
+                    text: mb_substr($text, $g['start'], $g['end'] - $g['start'], 'UTF-8'),
+                    normalized: $g['value'],
+                    start: $g['start'],
+                    end: $g['end'],
                 );
             }
         }

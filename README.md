@@ -79,12 +79,14 @@ $result->censor();       // "you ****"
 ```php
 Profanity::findProfanity("fuck muji मुजी", ['languages' => ['romanized']]);      // ["muji"]
 Profanity::containsProfanity("you idiot", ['strictness' => 'lenient']);         // false
-Profanity::findProfanity("terms and conditions", ['strictness' => 'strict']);   // ["conditions"]
+Profanity::findProfanity("damn it", ['strictness' => 'strict']);   // ["damn"]
 ```
 
 - `languages`: any of `"english"`, `"romanized"`, `"devanagari"`. Default: all three.
 - `strictness`: `"lenient"` (severe words only), `"standard"` (default, adds milder insults like `idiot`, `murkha`) or
-  `"strict"` (adds the stems `rand`, `cond`, `kand`, `lund`, which also hit words like `Randip` and `conditions`).
+  `"strict"` (adds entries that are also ordinary words, like `damn`, and the stems `rand`, `cond`, `kand`, `lund`;
+  names they would hit, like `Randip`, are on a built-in allow list).
+- `extraWords`: more words to flag. `allowWords`: words never to flag, such as names on your site.
 
 Build the tables once and reuse them:
 

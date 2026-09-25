@@ -53,6 +53,23 @@ final class ProfanityTest extends TestCase
             'Latin phrase from words.csv' => ['khatako choro'],
             'Devanagari phrase from words.csv' => ['राण्डीको बान'],
             'spelling variant with -ey' => ['yo khatey payment app kahiley chaley po'],
+            'an English slur' => ['what a faggot'],
+            'a short English slur' => ['fag'],
+            'an English slur in leetspeak' => ['f@ggot'],
+            'an English compound with a stem' => ['shitface'],
+            'an English compound in leetspeak with !' => ['sh!tf@ce'],
+            'a root inside a longer word' => ['dumbfuck'],
+            'a root inside a joined phrase' => ['sonofabitch'],
+            'x written for chh' => ['xakka'],
+            'x written for chh, stretched' => ['xaaakka'],
+            'x written for ch' => ['maxikne'],
+            'a word split by punctuation' => ['sh.it happens'],
+            'a word split by a hyphen' => ['fu-ck off'],
+            'a word split with one letter on its own' => ['f-ck off'],
+            'accented letters' => ['fück'],
+            'a Cyrillic look-alike letter' => ["fu\u{0441}k"],
+            '9 for g' => ['ni99er'],
+            '8 for b' => ['8itch'],
             'dodging with a wildcard for the hidden first letter' => ['that *ss'],
             'dodging with a wildcard for the hidden last letter' => ['fuc* off'],
         ];
@@ -102,6 +119,35 @@ final class ProfanityTest extends TestCase
             'lato keta' => ['lato keta'],
             'फोहोर पानी' => ['फोहोर पानी'],
             'लाटो केटा' => ['लाटो केटा'],
+            // chh (छ) is kept apart from ch (च)
+            'chhodnu parchha' => ['chhodnu parchha'],
+            'xodnu parchha' => ['xodnu parchha'],
+            'chhut paunu bhayo' => ['chhut paunu bhayo'],
+            // Words and names on the allow list, or that only contain a listed word
+            'Shital Shrestha' => ['Shital Shrestha'],
+            'Shitijko ghar' => ['Shitijko ghar'],
+            'Nigeria and Niger' => ['Nigeria and Niger'],
+            'he sniggered' => ['he sniggered'],
+            'Scunthorpe United' => ['Scunthorpe United'],
+            'Harshita and Nishita' => ['Harshita and Nishita'],
+            'shiitake mushrooms' => ['shiitake mushrooms'],
+            'a niggardly tip' => ['a niggardly tip'],
+            'Shiite and Sunni' => ['Shiite and Sunni'],
+            'a cutwater and sweetwater' => ['a cutwater and sweetwater'],
+            'the dog\'s muzzle' => ['the dog\'s muzzle'],
+            'sticky goo' => ['sticky goo'],
+            'a looser fit' => ['a looser fit'],
+            'fagotto solo' => ['fagotto solo'],
+            // Punctuation that isn't hiding a word
+            'e.g. the i.e. case' => ['e.g. the i.e. case'],
+            'shital.shrestha@example.com' => ['shital.shrestha@example.com'],
+            'self-conscious and well-known' => ['self-conscious and well-known'],
+            'don\'t go' => ['don\'t go'],
+            // Ordinary words the Romanized spelling folds must not change
+            'the sale is on' => ['the sale is on'],
+            'good food' => ['good food'],
+            'book a shoot' => ['book a shoot'],
+            'the 2026 census' => ['the 2026 census'],
         ];
     }
 
@@ -169,12 +215,45 @@ final class ProfanityTest extends TestCase
         self::assertFalse(Profanity::containsProfanity('Randip Thapa'));
     }
 
-    public function testStrictnessStrictAddsStemsThatHitOrdinaryWords(): void
+    public function testStrictnessStrictAddsStemsAndWordsThatHitOrdinaryWords(): void
     {
         $strict = ['strictness' => 'strict'];
         self::assertSame(['randikoban'], Profanity::findProfanity('randikoban', $strict));
-        self::assertSame(['conditions'], Profanity::findProfanity('terms and conditions', $strict));
-        self::assertSame(['randip'], Profanity::findProfanity('Randip Thapa', $strict));
+        self::assertSame(['damn'], Profanity::findProfanity('damn it', $strict));
+        self::assertSame([], Profanity::findProfanity('damn it'));
+    }
+
+    public function testStrictnessStrictStillLeavesTheAllowListAlone(): void
+    {
+        $strict = ['strictness' => 'strict'];
+        self::assertSame([], Profanity::findProfanity('Randip Thapa', $strict));
+        self::assertSame([], Profanity::findProfanity('Randipko class', $strict));
+        self::assertSame([], Profanity::findProfanity('terms and conditions', $strict));
+        self::assertSame([], Profanity::findProfanity('a random conductor', $strict));
+        self::assertSame([], Profanity::findProfanity('Kandel sir', $strict));
+    }
+
+    public function testExtraWordsAreFlaggedWithLeetspeakAndPostpositions(): void
+    {
+        $filter = Profanity::createFilter(['extraWords' => ['spammer', 'ठग']]);
+        self::assertSame(['spammer'], $filter->findProfanity('sp4mmer'));
+        self::assertSame(['spammerko'], $filter->findProfanity('spammerko kura'));
+        self::assertSame(['ठगको'], $filter->findProfanity('ठगको'));
+        self::assertSame([], Profanity::findProfanity('spammer ठग'));
+    }
+
+    public function testAllowWordsAreNeverFlagged(): void
+    {
+        self::assertSame([], Profanity::findProfanity('idiot', ['allowWords' => ['idiot']]));
+        self::assertSame([], Profanity::findProfanity('mujiko', ['allowWords' => ['muji']]));
+        self::assertSame([], Profanity::findProfanity('मुजीको', ['allowWords' => ['मुजी']]));
+        self::assertSame(['muji'], Profanity::findProfanity('idiot muji', ['allowWords' => ['idiot']]));
+    }
+
+    public function testWordListsMustBeListsOfStrings(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Profanity::createFilter(['allowWords' => [1]]);
     }
 
     public function testStrictnessRejectsAnUnknownValue(): void
@@ -241,6 +320,8 @@ final class ProfanityTest extends TestCase
             ['f*ck and *sh*t*', '**** and ******'],
             ['muji muji', '**** ****'],
             ['you 😀 muji 😀', 'you 😀 **** 😀'],
+            ['sh.it happens', '***** happens'],
+            ['sh!tf@ce', '********'],
         ];
     }
 
@@ -299,7 +380,7 @@ final class ProfanityTest extends TestCase
     {
         self::assertSame('fuck ****', Profanity::censor('fuck muji', ['languages' => ['romanized']]));
         self::assertSame('you idiot', Profanity::censor('you idiot', ['strictness' => 'lenient']));
-        self::assertSame('****** Thapa', Profanity::createFilter(['strictness' => 'strict'])->censor('Randip Thapa'));
+        self::assertSame('**** Randip', Profanity::createFilter(['strictness' => 'strict'])->censor('damn Randip'));
     }
 
     public function testCensorRejectsAnEmptyMask(): void

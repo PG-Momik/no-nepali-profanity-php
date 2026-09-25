@@ -21,7 +21,12 @@ final class Profanity
     {
         $languages = $options['languages'] ?? Lexicon::LANGUAGES;
         sort($languages);
-        $key = ($options['strictness'] ?? '') . '|' . implode(',', $languages);
+        $key = serialize([
+            $options['strictness'] ?? '',
+            $languages,
+            $options['extraWords'] ?? [],
+            $options['allowWords'] ?? [],
+        ]);
         return self::$cache[$key] ??= new ProfanityFilter($options);
     }
 

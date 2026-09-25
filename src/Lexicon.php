@@ -37,11 +37,63 @@ final class Lexicon
         ['text' => 'wanker', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'retard', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'fack', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fag', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fags', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'faggot', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'faggots', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'fagot', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'faggy', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'nigger', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'niggers', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'nigga', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'niggas', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'tranny', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'kike', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shitface', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shithole', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dipshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'horseshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'batshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'apeshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'jackass', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'asshat', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'asswipe', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cocksucker', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'jizz', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dildo', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'skank', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'douchebag', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'motherfucker', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bollocks', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bellend', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'piss', 'language' => 'english', 'strictness' => 'standard'],
         ['text' => 'idiot', 'language' => 'english', 'strictness' => 'standard'],
         ['text' => 'stupid', 'language' => 'english', 'strictness' => 'standard'],
         ['text' => 'moron', 'language' => 'english', 'strictness' => 'standard'],
-
+        ['text' => 'crap', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'crappy', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'bugger', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'douche', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'jerk', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'scumbag', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'dumb', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'wtf', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'stfu', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'tits', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'boobs', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'porn', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'porno', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'horny', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'bimbo', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'thot', 'language' => 'english', 'strictness' => 'standard'],
+        ['text' => 'spic', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'chink', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'dyke', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'hoe', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'cum', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'prick', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'damn', 'language' => 'english', 'strictness' => 'strict'],
+        ['text' => 'rape', 'language' => 'english', 'strictness' => 'strict'],
         ['text' => 'muji', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'mujhi', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'muzi', 'language' => 'romanized', 'strictness' => 'lenient'],
@@ -113,6 +165,30 @@ final class Lexicon
         ['text' => 'chodeko', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'toori', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'kundo', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhakke', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'maxikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'mxikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'xutiya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'xutia', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhutiya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chootiya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'xikne', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jhant', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jhaant', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jhantu', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lauda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lavda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lawda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'loda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lwado', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'lwada', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosda', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'bhosri', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhinal', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhinar', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'besya', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'maachod', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'madarchood', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'kutta', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'kutti', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'kuttiya', 'language' => 'romanized', 'strictness' => 'standard'],
@@ -139,7 +215,12 @@ final class Lexicon
         ['text' => 'gobre', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'bhusya', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'dhurt', 'language' => 'romanized', 'strictness' => 'standard'],
-
+        ['text' => 'gadha', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'ullu', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'badmash', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'thukka', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'haramkhor', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'fataha', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'मुजी', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'मुजि', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'माचिक्ने', 'language' => 'devanagari', 'strictness' => 'lenient'],
@@ -202,6 +283,11 @@ final class Lexicon
         ['text' => 'भोसडीके', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'गाण्डको', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'कोन्डो', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'छिनाल', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'झांट', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'झाँट', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लौडा', 'language' => 'devanagari', 'strictness' => 'lenient'],
+        ['text' => 'लवडा', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'कुत्ता', 'language' => 'devanagari', 'strictness' => 'standard'],
         ['text' => 'कुत्ती', 'language' => 'devanagari', 'strictness' => 'standard'],
         ['text' => 'कुत्तिया', 'language' => 'devanagari', 'strictness' => 'standard'],
@@ -231,6 +317,13 @@ final class Lexicon
         ['text' => 'गोबरे', 'language' => 'devanagari', 'strictness' => 'standard'],
         ['text' => 'भुस्या', 'language' => 'devanagari', 'strictness' => 'standard'],
         ['text' => 'धूर्त', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'गधा', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'उल्लु', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'उल्लू', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'बदमाश', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'थुक्का', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'हरामखोर', 'language' => 'devanagari', 'strictness' => 'standard'],
+        ['text' => 'फटाहा', 'language' => 'devanagari', 'strictness' => 'standard'],
     ];
 
     public const STEMS = [
@@ -244,6 +337,14 @@ final class Lexicon
         ['text' => 'slut', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'wank', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'retard', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'shit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'nigger', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cocksuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bullshit', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dickhead', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'douchebag', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'jizz', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'dildo', 'language' => 'english', 'strictness' => 'lenient'],
         ['text' => 'machikn', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'mchikn', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'chutiy', 'language' => 'romanized', 'strictness' => 'lenient'],
@@ -255,8 +356,10 @@ final class Lexicon
         ['text' => 'chickn', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'chod', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'jath', 'language' => 'romanized', 'strictness' => 'lenient'],
-        // Each of these also starts ordinary words or names: rand → Randip, cond → condition,
-        // kand → kanda / Kandel, lund → Lundberg.
+        ['text' => 'xutiy', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'chhutiy', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'maxikn', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'jhant', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'rand', 'language' => 'romanized', 'strictness' => 'strict'],
         ['text' => 'cond', 'language' => 'romanized', 'strictness' => 'strict'],
         ['text' => 'kand', 'language' => 'romanized', 'strictness' => 'strict'],
@@ -273,7 +376,6 @@ final class Lexicon
         ['text' => 'रण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'लुण्ड', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'जाठ', 'language' => 'devanagari', 'strictness' => 'lenient'],
-        // Devanagari pairs of the "strict" Latin stems cond and kand.
         ['text' => 'कोन्ड', 'language' => 'devanagari', 'strictness' => 'strict'],
         ['text' => 'कान्ड', 'language' => 'devanagari', 'strictness' => 'strict'],
     ];
@@ -293,8 +395,12 @@ final class Lexicon
         ['text' => 'khatako choro', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'bhaluko ban', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'machikne khate', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'teri maa ki', 'language' => 'romanized', 'strictness' => 'lenient'],
+        ['text' => 'teri ma ki', 'language' => 'romanized', 'strictness' => 'lenient'],
         ['text' => 'pesa garne', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'sasto manche', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'gu khane', 'language' => 'romanized', 'strictness' => 'standard'],
+        ['text' => 'gu khaa', 'language' => 'romanized', 'strictness' => 'standard'],
         ['text' => 'चाकको प्वाल', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'चाक को प्वाल', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'तेरो आमाको', 'language' => 'devanagari', 'strictness' => 'lenient'],
@@ -312,6 +418,35 @@ final class Lexicon
         ['text' => 'माचिक्ने खाते', 'language' => 'devanagari', 'strictness' => 'lenient'],
         ['text' => 'पेसा गर्ने', 'language' => 'devanagari', 'strictness' => 'standard'],
         ['text' => 'सस्तो मान्छे', 'language' => 'devanagari', 'strictness' => 'standard'],
+    ];
+
+    /**
+     * Latin roots caught anywhere inside a word, not just at its start: dumbfuck, sonofabitch. Only roots that no
+     * ordinary word contains are here; the few that do, like Scunthorpe, are in ALLOWED.
+     */
+    public const INFIXES = [
+        ['text' => 'fuck', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'cunt', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'bitch', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'whore', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'nigger', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'faggot', 'language' => 'english', 'strictness' => 'lenient'],
+        ['text' => 'jizz', 'language' => 'english', 'strictness' => 'lenient'],
+    ];
+
+    /**
+     * Ordinary words and names that a stem or an embedded root would otherwise flag. A word here is never flagged,
+     * with or without a postposition (Randipko, Shitijlai), at any strictness.
+     */
+    public const ALLOWED = [
+        'shitij', 'shitiz', 'shital', 'shitala', 'shitalpati', 'shitanshu', 'shiitake', 'shitake', 'shiite',
+        'shiites', 'shiitic', 'niger', 'nigeria', 'nigerian', 'nigerians', 'nigerien', 'snigger', 'sniggers',
+        'sniggered', 'sniggering', 'sniggerer', 'scunthorpe', 'randip', 'randeep', 'randhir', 'randhawa', 'random',
+        'randomly', 'randomness', 'randomize', 'randomized', 'randy', 'condition', 'conditions', 'conditional',
+        'conditionally', 'conditioner', 'conditioning', 'conditioned', 'conduct', 'conducts', 'conducted',
+        'conducting', 'conductor', 'conductors', 'conduction', 'conductive', 'condense', 'condensed', 'condenser',
+        'condemn', 'condemned', 'condolence', 'condolences', 'condiment', 'kanda', 'kandel', 'kandu', 'kandahar',
+        'lundberg', 'lundup',
     ];
 
     /** Longer first, so a bare "को" is only tried after "हरूको". Order matters. */
@@ -351,6 +486,12 @@ final class Lexicon
     public static function latinPhrases(): array
     {
         return self::texts(self::PHRASES, true);
+    }
+
+    /** @return list<string> Latin-script roots matched anywhere inside a word, at every strictness. */
+    public static function latinInfixes(): array
+    {
+        return self::texts(self::INFIXES, true);
     }
 
     /** @return list<string> Devanagari words at every strictness. */
